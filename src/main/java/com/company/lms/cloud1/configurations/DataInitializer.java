@@ -35,6 +35,7 @@ public class DataInitializer {
                 Role adminRole = roleRepository.findByName("ADMIN").orElse(new Role("ADMIN"));
                 adminUser.getRoles().add(adminRole);
                 roleRepository.save(adminRole);
+                userRepository.save(adminUser);
             }
 
         };
