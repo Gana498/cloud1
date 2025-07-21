@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.web.SecurityFilterChain;		
 
 @Configuration
@@ -18,7 +19,9 @@ public class SecurityConfig {
         .requestMatchers("/h2-console/**").permitAll()
         .requestMatchers("/adminhome").hasRole("ADMIN")
         .requestMatchers("/manageusers").hasRole("ADMIN")
+        .requestMatchers("/").authenticated()   
         .anyRequest().authenticated())
+        .formLogin(withDefaults())
         .logout(logout -> logout.permitAll())
         .csrf(csrf -> csrf
         .ignoringRequestMatchers("/h2-console/**"))

@@ -1,7 +1,6 @@
 package com.company.lms.cloud1.configurations;
 
 import org.springframework.context.annotation.Configuration;
-import java.util.Set;
 
 import com.company.lms.cloud1.repository.RoleRepository;
 import com.company.lms.cloud1.repository.UserRepository;
@@ -10,20 +9,21 @@ import com.company.lms.cloud1.model.User;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class DataInitializer {
     // This class can be used to initialize data at application startup
 
     @Bean
-    public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository) {
+    public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             User adminUser = userRepository.findByUsername("admin");
             // Check if the user "admin" exists, if not create it
             if (adminUser == null) {
                 adminUser = new User();
                 adminUser.setUsername("admin");
-                adminUser.setPassword("admin123");
+                adminUser.setPassword(passwordEncoder.encode("admin123"));
                 adminUser.setEnabled(true);
                 userRepository.save(adminUser);
             }
@@ -31,8 +31,8 @@ public class DataInitializer {
                 adminUser.setEnabled(true);
                 userRepository.save(adminUser);
             }
-            if (!adminUser.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"))) {
-                Role adminRole = roleRepository.findByName("ADMIN").orElse(new Role("ADMIN"));
+            if (!adminUser.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_ADMIN"))) {
+                Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElse(new Role("ROLE_ADMIN"));
                 adminUser.getRoles().add(adminRole);
                 roleRepository.save(adminRole);
                 userRepository.save(adminUser);

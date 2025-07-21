@@ -1,6 +1,11 @@
 package com.company.lms.cloud1.model;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -77,6 +82,15 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+            return roles.stream()
+                .map(Role::getName)
+                .collect(Collectors.toList())
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 }
 
