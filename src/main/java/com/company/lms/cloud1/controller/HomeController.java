@@ -25,8 +25,9 @@ public class HomeController {
         return "manageusers"; // Returns the view name "manageusers"
     }
 
+   
     @GetMapping("/adminhome")
     public String getAdminHomePage() {
-        return "adminhome"; // Returns the view name "manageusers"
+        return "adminhome"; // Returns the view name "adminhome"
     }
 }
